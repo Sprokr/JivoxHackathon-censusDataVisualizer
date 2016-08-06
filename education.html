@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<html>
+<head>
+	
+	<title>Education Census</title>
+
+	<!-- jQuery -->
+	<script src="js/jquery-3.1.0.min.js"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<style>
+		select {
+			display: inline-block;
+		    width: 150px;
+		    height: 20px;
+		    padding: 3px 6px;
+		    margin-bottom: 10px;
+		    font-size: 12px;
+		    line-height: 20px;
+		    color: #555555;
+		    vertical-align: middle;
+		    -webkit-border-radius: 4px;
+		    -moz-border-radius: 4px;
+		    border-radius: 4px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- Navigation bar / menu starts-->
+	<nav class="navbar navbar-default navbar-static-top navbar-inverse">
+		<div class="container">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="container-fluid">
+		        <div class="navbar-header">
+		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
+		                <span class="sr-only">Toggle navigation</span>
+		                <span class="icon-bar"></span>
+		                <span class="icon-bar"></span>
+		                <span class="icon-bar"></span>
+		            </button>
+		            <a class="navbar-brand" href="index.html">Census Visualization</a>
+		        </div>
+		        <!-- Collect the nav links, forms, and other content for toggling -->
+		        <div class="collapse navbar-collapse" id="navbarCollapse">
+		            <ul class="nav navbar-nav">
+		                <li class="active"><a href="index.html">&nbsp;Home&nbsp;</a></li>
+		                <li><a href="education.html" target="_blank">&nbsp;Education&nbsp;</a></li>
+		                <li><a href="" target="_blank">&nbsp;Income&nbsp;</a></li>
+		            </ul>
+		        </div>
+		        <div></div>
+		    </div>
+		</div> 
+    </nav>
+    <!-- Navigation bar / menu ends-->
+
+    <!-- Main Content starts here -->
+    <div class="jumbotron">
+        <div class="container-fluid">
+            <h1 class="page-header" align="center">Education Census 2016 Data Visualization</h1>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+    	<!-- .row -->
+        <div class="row">
+    	   <!-- Gap for space -->
+            <div class="col-lg-1" align="right">
+                <select id="state">
+                    <option value="0">Select State</option>
+                    <option value="1">Andra Pradesh</option>
+                    <option value="1">Andra Pradesh</option>
+                    <option value="2">Arunachal Pradesh</option>
+                    <option value="3">Assam</option>
+                    <option value="4">Bihar</option>
+                    <option value="5">Chhattisgarh</option>
+                    <option value="6">Goa</option>
+                    <option value="7">Gujarat</option>
+                    <option value="8">Haryana</option>
+                    <option value="9">Himachal Prades</option>
+                    <option value="10">Jammu and Kashmir</option>
+                    <option value="11">Jharkhand</option>
+                    <option value="12">Karnataka</option>
+                    <option value="13">Kerala</option>
+                    <option value="14">Madya Pradesh</option>
+                    <option value="15">Maharashtra</option>
+                    <option value="16">Manipur</option>
+                    <option value="17">Meghalaya</option>
+                    <option value="18">Mizoram</option>
+                    <option value="19">Nagaland</option>
+                    <option value="20">Orissa</option>
+                    <option value="21">Punjab</option>
+                    <option value="22">Rajasthan</option>
+                    <option value="23">Sikkim</option>
+                    <option value="24">Tamil Nadu</option>
+                    <option value="25">Tripura</option>
+                    <option value="26">Uttaranchal</option>
+                    <option value="27">Uttar Pradesh</option>
+                    <option value="28">West Bengal</option>
+                    <option value="29">Andaman and Nicobar Islands</option>
+                    <option value="30">Chandigarh</option>
+                    <option value="31">Dadar and Nagar Haveli</option>
+                    <option value="32">Daman and Diu</option>
+                    <option value="33">Delhi</option>
+                    <option value="34">Lakshadeep</option>
+                    <option value="35">Pondicherry</option>
+                </select>
+            </div>
+
+            <div class="col-lg-10" id="edu_chart" style="height:400px;width:100%;">
+                
+            </div>
+
+    	</div>
+        <!-- #row -->
+    </div>
+
+    <br>
+    <br>
+    <!-- Main Content ends here -->
+
+    <!-- Footer Starts-->
+    <hr>
+    <div class="row" align="center">
+        <div class="col-xs-12">
+            <footer>
+                <p>&copy; Copyright 2016 Jivox Hackathon</p>
+            </footer>
+        </div>
+    </div>
+    <!-- Footer Ends-->
+
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        var state = '';
+        $(document).on('change', 'select#state', function(){
+            state = $(this).val();
+            if( state == "0" ){
+                alert("Please select a state!!!!");
+                $("#edu_chart").html("");
+            }else{
+                $.ajax({
+                  type: "POST",
+                  url: "getStateEducationData",
+                  data: jQuery("#contactform").serialize(),
+                  cache: false,
+                  success:  function(data){
+                    drawVisualization(state);
+                  }
+                });
+            }
+        });
+
+	      google.charts.load('current', {'packages':['corechart']});
+	      google.charts.setOnLoadCallback(drawVisualization);
+
+	      function drawVisualization(data1) {
+            alert(data1);
+	        // Some raw data (not necessarily accurate)
+	        var data = google.visualization.arrayToDataTable([
+                ['Age Group', 'Female', 'Male' ],
+                ['0-7',  165,      938 ],
+                ['8-15',  135,      1120 ],
+                ['16-23',  157,      1167 ]
+            ]);
+
+	    var options = {
+	      title : 'Education Census',
+	      vAxis: {title: 'Education Level'},
+	      hAxis: {title: 'Age Group'},
+	      seriesType: 'bars',
+	      series: {5: {type: 'line'}}
+	    };
+
+	    var chart = new google.visualization.ComboChart(document.getElementById('edu_chart'));
+	    chart.draw(data, options);
+	  }
+
+    </script>
+</body>
+</html>

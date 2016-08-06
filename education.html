@@ -150,8 +150,8 @@
             }else{
                 $.ajax({
                   type: "POST",
-                  url: "getStateEducationData",
-                  data: jQuery("#contactform").serialize(),
+                  url: "localhost:5000/getStateEducationData",
+                    data: '{"stateCode":'+state+'}',
                   cache: false,
                   success:  function(data){
                     drawVisualization(state);

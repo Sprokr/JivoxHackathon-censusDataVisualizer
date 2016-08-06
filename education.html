@@ -150,8 +150,7 @@
             }else{
             	
             	var st = {'stateCode':state};
-            	alert();
-                /*
+            	/*
                 $.post("http://127.0.0.1:5000/getStateEducationData",JSON.stringify({
 		          "stateCode": 1
 		        }),
@@ -161,18 +160,15 @@
 		        */
                 $.ajax({
                   type: "POST",
-                  url: "http://localhost:5000/getStateEducationData",
-                  data: {'stateCode':state},//JSON.stringify(st),
+                  url: "http://0.0.0.0:8080/getStateEducationData",
+                  data: JSON.stringify({"stateCode":state}),//JSON.stringify(st),
                   cache: false,
-                  headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Max-Age': "1000",
-                    'Access-Control-Allow-Headers': "x-requested-with, Content-Type, origin, authorization, accept, client-security-token"
-
-                  },
-                  success:  function(data){
-                    //drawVisualization(data);
-                    alert();
+                    headers:{
+                        'Content-Type':"application/json"
+                    },
+                  success:  function(response){
+                    drawVisualization(response.content());
+                    //alert(response.content());
                   }
                 });
             }
@@ -181,7 +177,8 @@
 	      google.charts.load('current', {'packages':['corechart']});
 	      google.charts.setOnLoadCallback(drawVisualization);
 
-	      function drawVisualization() {
+	      function drawVisualization(response) {
+            alert(response);
 	        // Some raw data (not necessarily accurate)
 	        var data = google.visualization.arrayToDataTable([
                 ['Age Group', 'Female', 'Male' ],

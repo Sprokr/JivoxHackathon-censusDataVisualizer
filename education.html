@@ -148,13 +148,31 @@
                 alert("Please select a state!!!!");
                 $("#edu_chart").html("");
             }else{
+            	
+            	var st = {'stateCode':state};
+            	alert();
+                /*
+                $.post("http://127.0.0.1:5000/getStateEducationData",JSON.stringify({
+		          "stateCode": 1
+		        }),
+		        function(data,status){
+		            alert("Data: " + data);
+		        });
+		        */
                 $.ajax({
                   type: "POST",
-                  url: "localhost:5000/getStateEducationData",
-                    data: '{"stateCode":'+state+'}',
+                  url: "http://localhost:5000/getStateEducationData",
+                  data: {'stateCode':state},//JSON.stringify(st),
                   cache: false,
+                  headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Max-Age': "1000",
+                    'Access-Control-Allow-Headers': "x-requested-with, Content-Type, origin, authorization, accept, client-security-token"
+
+                  },
                   success:  function(data){
-                    drawVisualization(state);
+                    //drawVisualization(data);
+                    alert();
                   }
                 });
             }
@@ -163,8 +181,7 @@
 	      google.charts.load('current', {'packages':['corechart']});
 	      google.charts.setOnLoadCallback(drawVisualization);
 
-	      function drawVisualization(data1) {
-            alert(data1);
+	      function drawVisualization() {
 	        // Some raw data (not necessarily accurate)
 	        var data = google.visualization.arrayToDataTable([
                 ['Age Group', 'Female', 'Male' ],

@@ -117,43 +117,6 @@
 				    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 				    <a href="#" class="btn btn-primary">View More...</a>
 				  </div>
-				  <select id="state">
-    	<option value="1">Andra Pradesh</option>
-    	<option value="1">Arunachal Pradesh</option>
-    	<option value="1">Assam</option>
-    	<option value="1">Bihar</option>
-    	<option value="1">Chhattisgarh</option>
-    	<option value="1">Goa</option>
-    	<option value="1">Gujarat</option>
-    	<option value="1">Haryana</option>
-    	<option value="1">Himachal Prades</option>
-    	<option value="1">Jammu and Kashmir</option>
-    	<option value="1">Jharkhand</option>
-    	<option value="1">Karnataka</option>
-    	<option value="1">Kerala</option>
-    	<option value="1">Madya Pradesh</option>
-    	<option value="1">Maharashtra</option>
-    	<option value="1">Manipur</option>
-    	<option value="1">Meghalaya</option>
-    	<option value="1">Mizoram</option>
-    	<option value="1">Nagaland</option>
-    	<option value="1">Orissa</option>
-    	<option value="1">Punjab</option>
-    	<option value="1">Rajasthan</option>
-    	<option value="1">Sikkim</option>
-    	<option value="1">Tamil Nadu</option>
-    	<option value="1">Tripura</option>
-    	<option value="1">Uttaranchal</option>
-    	<option value="1">Uttar Pradesh</option>
-    	<option value="1">West Bengal</option>
-    	<option value="1">Andaman and Nicobar Islands</option>
-    	<option value="1">Chandigarh</option>
-    	<option value="1">Dadar and Nagar Haveli</option>
-    	<option value="1">Daman and Diu</option>
-    	<option value="1">Delhi</option>
-    	<option value="1">Lakshadeep</option>
-    	<option value="1">Pondicherry</option>
-    </select>
 				</div>
     		</div>
 
@@ -185,12 +148,12 @@
 	      function drawVisualization() {
 	        // Some raw data (not necessarily accurate)
 	        var data = google.visualization.arrayToDataTable([
-	         ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
-	         ['2004/05',  165,      938,         522,             998,           450,      614.6],
-	         ['2005/06',  135,      1120,        599,             1268,          288,      682],
-	         ['2006/07',  157,      1167,        587,             807,           397,      623],
-	         ['2007/08',  139,      1110,        615,             968,           215,      609.4],
-	         ['2008/09',  136,      691,         629,             1026,          366,      569.6]
+	         ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+	         ['2004/05',  165,      938,         522,             998,           450,      614.6,  165,      938,         522,             998,           450,      614.6],
+	         ['2005/06',  135,      1120,        599,             1268,          288,      682,  165,      938,         522,             998,           450,      614.6],
+	         ['2006/07',  157,      1167,        587,             807,           397,      623,  165,      938,         522,             998,           450,      614.6],
+	         ['2007/08',  139,      1110,        615,             968,           215,      609.4,  165,      938,         522,             998,           450,      614.6],
+	         ['2008/09',  136,      691,         629,             1026,          366,      569.6,  165,      938,         522,             998,           450,      614.6]
 	      ]);
 
 	    var options = {
@@ -250,8 +213,8 @@
                'and population of some world countries (2010)',
         hAxis: {title: 'Life Expectancy'},
         vAxis: {title: 'Fertility Rate'},
-        bubble: {textStyle: {fontSize: 11}}
-      };
+        bubble: {textStyle: {fontSize: 20}}
+      
 
       var chart = new google.visualization.BubbleChart(document.getElementById('nut_chart'));
       chart.draw(data, options);

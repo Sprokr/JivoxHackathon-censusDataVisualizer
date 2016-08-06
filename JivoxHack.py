@@ -5,6 +5,7 @@ app = Flask(__name__)
 author = 'Sumit'
 #!flask/bin/python
 from flask import request
+from flask import make_response
 import json
 import string
 import random
@@ -12,6 +13,7 @@ import datetime
 import MySQLdb
 from CONSTANTS_LIST import *
 from MySQLdb import escape_string as thwart
+
 
 
 def name_generator(size=6, chars=string.ascii_uppercase ):
@@ -64,22 +66,43 @@ def populateData():
         conn.close()
         return "Data Population Successful"
 
+
 @app.route('/getStateEducationData', methods=["POST"])
 def getEduData():
     data = request.json
+    print data
     if "stateCode" not in data.keys():
         return json.dump("State Code is not passed !!")
     else:
         c,conn = connection()
-        state = data["stateCode"]
-        c.execute("SELECT COUNT(*) FROM " + eduDB + " WHERE gender = 'Female';")
-        x = c.fetchone()
-        for row in x:
-            print row
+        state = int(data["stateCode"])
+
+        genderWiseData = {"Female":{},"Male":{},"UNCLASSIFIED":{}}
+        result= []
+        for a in genderWiseData.keys():
+            if state <= 0 or state > 35 :
+                c.execute("select lastClass,COUNT(*) as count FROM "+eduDB+" where gender='"+a+"' GROUP BY lastClass ;")
+            else:
+                c.execute("select lastClass,COUNT(*) as count FROM " + eduDB + " where gender='"+a+"' and stateCode = "+str(state)+" GROUP BY lastClass ;")
+            x = c.fetchall()
+
+            for row in x:
+                if row[0] not in genderWiseData[a].keys():
+                    genderWiseData[a][row[0]] = int(row[1])
+                else:
+                    genderWiseData[a][row[0]] += int(row[1])
+
+            tmpRes = {"Gender": a, "educationLevel":[]}
+            for classes in genderWiseData[a].keys():
+                tmpRes["educationLevel"].append({"class": classes, "count": genderWiseData[a][classes]})
+            result.append(tmpRes)
 
         c.close()
         conn.close()
-        return "Did Something"
+        response = jsonify({'result': result})
+        # response = Response(js, status=200, mimetype='application/json')
+        response.headers.add('Content-Type' , 'application/json')
+        return response
 
 @app.route('/')
 def hello_world():
@@ -99,7 +122,12 @@ def register_page():
 
 
 
-
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0',port=8080)

@@ -4,7 +4,7 @@
 <html>
 <head>
 
-    <title>Education Census</title>
+    <title>Comparision</title>
 
     <!-- jQuery -->
     <script src="js/jquery-3.1.0.min.js"></script>
@@ -42,8 +42,8 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="nav navbar-nav">
                     <li><a href="index.html">&nbsp;Home&nbsp;</a></li>
-                    <li class="active"><a href="education.html" target="_blank">&nbsp;Education&nbsp;</a></li>
-                    <li><a href="comparision.html" target="_blank">&nbsp;Comparision&nbsp;</a></li>
+                    <li><a href="education.html" target="_blank">&nbsp;Education&nbsp;</a></li>
+                    <li class="active"><a href="comparision.html" target="_blank">&nbsp;Comparision&nbsp;</a></li>
                 </ul>
             </div>
             <div></div>
@@ -55,15 +55,15 @@
 <!-- Main Content starts here -->
 <div class="jumbotron">
     <div class="container-fluid">
-        <h1 class="page-header" align="center" style="color: #00e64d;">Education Census 2016 Data Visualization</h1>
+        <h1 class="page-header" align="center" style="color: #00e64d;">Data Visualization for Comparision between two states</h1>
     </div>
 </div>
 
 <div class="container-fluid">
     <!-- .row -->
     <div class="row">
-        <!-- Gap for space -->
-        <div class="col-lg-2" align="right">
+        
+        <div class="col-lg-6" align="right">
             <select id="state">
                 <option value="0">Select State</option>
                 <option value="1">Andra Pradesh</option>
@@ -104,10 +104,58 @@
             </select>
         </div>
 
-        <!-- Div where chart is populated after selection -->
-        <div class="col-lg-10 col-md-8" id="edu_chart" style="width: 800px;height:500px;" align="right">
+        <div class="col-lg-6" align="left">
+            <select id="state2">
+                <option value="0">Select State</option>
+                <option value="1">Andra Pradesh</option>
+                <option value="2">Arunachal Pradesh</option>
+                <option value="3">Assam</option>
+                <option value="4">Bihar</option>
+                <option value="5">Chhattisgarh</option>
+                <option value="6">Goa</option>
+                <option value="7">Gujarat</option>
+                <option value="8">Haryana</option>
+                <option value="9">Himachal Prades</option>
+                <option value="10">Jammu and Kashmir</option>
+                <option value="11">Jharkhand</option>
+                <option value="12">Karnataka</option>
+                <option value="13">Kerala</option>
+                <option value="14">Madya Pradesh</option>
+                <option value="15">Maharashtra</option>
+                <option value="16">Manipur</option>
+                <option value="17">Meghalaya</option>
+                <option value="18">Mizoram</option>
+                <option value="19">Nagaland</option>
+                <option value="20">Orissa</option>
+                <option value="21">Punjab</option>
+                <option value="22">Rajasthan</option>
+                <option value="23">Sikkim</option>
+                <option value="24">Tamil Nadu</option>
+                <option value="25">Tripura</option>
+                <option value="26">Uttaranchal</option>
+                <option value="27">Uttar Pradesh</option>
+                <option value="28">West Bengal</option>
+                <option value="29">Andaman and Nicobar Islands</option>
+                <option value="30">Chandigarh</option>
+                <option value="31">Dadar and Nagar Haveli</option>
+                <option value="32">Daman and Diu</option>
+                <option value="33">Delhi</option>
+                <option value="34">Lakshadeep</option>
+                <option value="35">Pondicherry</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+
+        <!-- Div where chart is populated after selection 1-->
+        <div class="col-lg-6 col-md-6" id="Schart1" style="width: 800px;height:500px;" align="center">
 
         </div>
+
+        <!-- Div where chart is populated after selection 2-->
+        <div class="col-lg-6 col-md-6" id="Schart2" style="width: 800px;height:500px;" align="center">
+
+        </div>        
 
     </div>
     <!-- #row -->
@@ -140,7 +188,7 @@
         state = $(this).val();
         if (state == "0") {
             alert("Please select a state!!!!");
-            $("#edu_chart").html("");
+            $("#Schart1").html("");
         } else {
 
             var st = {'stateCode': state};
@@ -154,16 +202,16 @@
                 },
                 success: function (response) {
                     JsonObject = response;
-                    drawVisualization();
+                    drawStateVisualization();
                 }
             });
         }
     });
 
-    // Code to display chart  
+    // Code to display chart 2 
     google.charts.load('current', {'packages': ['corechart']});
-    google.charts.setOnLoadCallback(drawVisualization);
-    function drawVisualization() {
+    google.charts.setOnLoadCallback(drawStateVisualization);
+    function drawStateVisualization() {
         var allRows = [];
         // Some raw data (not necessarily accurate)
         var data = new google.visualization.DataTable();
@@ -194,7 +242,70 @@
             series: {3: {type: 'line'}}
         };
 
-        var chart = new google.visualization.ComboChart(document.getElementById('edu_chart'));
+        var chart = new google.visualization.ComboChart(document.getElementById('Schart1'));
+        chart.draw(data, options);
+    }
+
+    //Code to read selection from drop down and call ajax function to hit related api
+    var state2 = '';
+    var JsonObject2 = '';
+    $(document).on('change', 'select#state2', function () {
+        state2 = $(this).val();
+        if (state2 == "0") {
+            alert("Please select a state!!!!");
+            $("#Schart2").html("");
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "http://0.0.0.0:8080/getStateEducationData",
+                data: JSON.stringify({"stateCode": state2}),//JSON.stringify(st),
+                cache: false,
+                headers: {
+                    'Content-Type': "application/json"
+                },
+                success: function (response) {
+                    JsonObject2 = response;
+                    drawState2Visualization();
+                }
+            });
+        }
+    });
+
+    // Code to display chart  
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(drawState2Visualization);
+    function drawState2Visualization() {
+        var allRows = [];
+        // Some raw data (not necessarily accurate)
+        var data = new google.visualization.DataTable();
+        var firstColumn = [];
+
+        for (var i = 0; i < JsonObject2.result[0].educationLevel.length; i++) {
+            firstColumn.push(JsonObject2.result[0].educationLevel[i].class);
+        }
+        var column = ["Class"];
+        data.addColumn("string", "Class");
+        for (var i = 0; i < JsonObject2.result.length; i++) {
+            column.push(JsonObject2.result[i].Gender);
+            data.addColumn("number", JsonObject2.result[i].Gender)
+        }
+        for (var a = 0; a < firstColumn.length; a++) {
+            var nextRow = [firstColumn[a]];
+            for (var b = 0; b < column.length - 1; b++) {
+                nextRow.push(JsonObject2.result[b].educationLevel[a].count);
+            }
+            allRows.push(nextRow);
+        }
+        data.addRows(allRows);
+        var options = {
+            title: 'Education Census',
+            vAxis: {title: 'Number Of People'},
+            hAxis: {title: 'Education Level'},
+            seriesType: 'bars',
+            series: {3: {type: 'line'}}
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('Schart2'));
         chart.draw(data, options);
     }
 </script>

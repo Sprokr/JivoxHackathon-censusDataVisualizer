@@ -25,7 +25,7 @@ def num_generator(min, max):
 def connection():
     conn = MySQLdb.connect(host="localhost",
                            user = "root",
-                           passwd = "",
+                           passwd = "root123",
                            db = "jivoxDb")
     c = conn.cursor()
 
@@ -34,11 +34,11 @@ def connection():
 @app.route('/populateData', methods=["POST"])
 def populateData():
     data = request.json
-    if "count" not in data.keys() or not isinstance(data["count"], int):
-        return json.dump("Count of data not provided")
+    if "count" not in data.keys():
+        return jsonify({"result":"Count of data not provided"})
     else:
         c, conn = connection()
-        count = data["count"]
+        count = int(data["count"])
         for i in range(0,count):
             name = name_generator()
             age = num_generator(0,89)

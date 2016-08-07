@@ -80,6 +80,9 @@ def getEduData():
         genderWiseData = {"Female":{},"Male":{},"UNCLASSIFIED":{}}
         result= []
         for a in genderWiseData.keys():
+            tmpRes = {"Gender": a, "educationLevel": []}
+            for z in range (0,len(lastClass)):
+                tmpRes["educationLevel"].append({"class": lastClass[z], "count":0})
             if state <= 0 or state > 35 :
                 c.execute("select lastClass,COUNT(*) as count FROM "+eduDB+" where gender='"+a+"' GROUP BY lastClass ;")
             else:
@@ -92,9 +95,10 @@ def getEduData():
                 else:
                     genderWiseData[a][row[0]] += int(row[1])
 
-            tmpRes = {"Gender": a, "educationLevel":[]}
+
             for classes in genderWiseData[a].keys():
-                tmpRes["educationLevel"].append({"class": classes, "count": genderWiseData[a][classes]})
+                tmpRes["educationLevel"][lastClass.index(classes)]["count"] = genderWiseData[a][classes]
+                # tmpRes["educationLevel"].append({"class": classes, "count": genderWiseData[a][classes]})
             result.append(tmpRes)
 
         c.close()

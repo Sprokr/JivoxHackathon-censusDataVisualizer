@@ -14,7 +14,22 @@ $(document).ready(function(){
             drawStudents();
         }
     });
-});
+
+//Taxable Data
+var JsonObjectSc = '';
+    $.ajax({
+        type: "POST",
+        url: "http://0.0.0.0:8080/getTaxableData",
+        data: JSON.stringify({"stateCode": 0}),//JSON.stringify(st),
+        cache: false,
+        headers: {
+            'Content-Type': "application/json"
+        },
+        success: function (response) {
+            JsonObjectSc = response;
+            drawTaxable();
+        }
+    });
 
 google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawStudents);
@@ -39,11 +54,10 @@ function drawStudents() {
 
 //Literacy Data
 var JsonObject1 = '';
-$(document).ready(function(){
     $.ajax({
         type: "POST",
         url: "http://0.0.0.0:8080/getLiteracyData",
-        data: JSON.stringify({"stateCode": 0}),//JSON.stringify(st),
+        data: JSON.stringify({"stateCode": 0}),
         cache: false,
         headers: {
             'Content-Type': "application/json"
@@ -53,7 +67,6 @@ $(document).ready(function(){
             drawLiteracy();
         }
     });
-});
 
 google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawLiteracy);
@@ -72,31 +85,9 @@ function drawLiteracy() {
     var options = {
       title: 'Literacy Data'
     };
-
-    var chart = new google.visualization.PieChart(document.getElementById('inc_chart'));
-
+    var chart = new google.visualization.PieChart(document.getElementById('nut_chart'));
     chart.draw(data, options);
 }
-
-
-
-//Taxable Data
-var JsonObjectSc = '';
-$(document).ready(function(){
-    $.ajax({
-        type: "POST",
-        url: "http://0.0.0.0:8080/getTaxableData",
-        data: JSON.stringify({"stateCode": 0}),//JSON.stringify(st),
-        cache: false,
-        headers: {
-            'Content-Type': "application/json"
-        },
-        success: function (response) {
-            JsonObjectSc = response;
-            drawTaxable();
-        }
-    });
-});
 
 google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawTaxable);
@@ -105,7 +96,6 @@ function drawTaxable() {
     data.addColumn("number","Age");
     data.addColumn("number", "Count");
     var allRows = [];
-
     for (var i =0; i < JsonObjectSc.result.length; i++){
         var nextRow = [];
         nextRow.push(JsonObjectSc.result[i].age);
@@ -116,7 +106,8 @@ function drawTaxable() {
     var options = {
       title: 'Taxable Data'
     };
-    var chart = new google.visualization.ScatterChart(document.getElementById('nut_chart'));
+    var chart = new google.visualization.ScatterChart(document.getElementById('inc_chart'));
     chart.draw(data, options);
 }
 
+});

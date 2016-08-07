@@ -115,7 +115,7 @@
                 </select>
             </div>
             <div class="col-lg-1"></div>    
-            <div class="col-lg-8" id="edu_chart" > <!-- style="height:400px;" -->
+            <div class="col-lg-8" id="edu_chart" style="height:400px;"> <!-- style="height:400px;" -->
                 
             </div>
 
@@ -141,7 +141,7 @@
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         var state = '';
-        var datum = '';
+        var JsonObject = '';
         $(document).on('change', 'select#state', function(){
             state = $(this).val();
             if( state == "0" ){
@@ -158,11 +158,12 @@
                     headers:{
                         'Content-Type':"application/json"
                     },
-                  success:  function(JsonObject){
+                  success:  function(response){
+                    JsonObject = response;
                     //var JsonObject = JSON.parse(response);
-                    datum = '{"cols": [ {"id":"","label":"Gender","pattern":"","type":"string"},{"id":"","label":"Count","pattern":"","type":"number"},{"id":"","label":"Education","pattern":"","type":"string"} ],"rows":[ {';
-                    datum += JsonObject.result[0].Gender +"', "+JsonObject.result[0].educationLevel[0].count+",'"+ JsonObject.result[0].educationLevel[0].class+"'},"+"{'"+ JsonObject.result[1].Gender+"', "+JsonObject.result[1].educationLevel[0].count+",'"+ JsonObject.result[1].educationLevel[0].class+"'}, {'"+ JsonObject.result[2].Gender+"', "+JsonObject.result[2].educationLevel[0].count+",'"+ JsonObject.result[2].educationLevel[0].class+"'}]}";
-                    alert(datum);
+                    //datum = '{"cols": [ {"id":"","label":"Gender","pattern":"","type":"string"},{"id":"","label":"Count","pattern":"","type":"number"},{"id":"","label":"Education","pattern":"","type":"string"} ],"rows":[ {';
+                    //datum += "'" + JsonObject.result[0].Gender +"', "+JsonObject.result[0].educationLevel[0].count+",'"+ JsonObject.result[0].educationLevel[0].class+"'},"+"{'"+ JsonObject.result[1].Gender+"', "+JsonObject.result[1].educationLevel[0].count+",'"+ JsonObject.result[1].educationLevel[0].class+"'}, {'"+ JsonObject.result[2].Gender+"', "+JsonObject.result[2].educationLevel[0].count+",'"+ JsonObject.result[2].educationLevel[0].class+"'}]}";
+                    //alert(datum);
                     drawVisualization();
                   }
                 });
@@ -174,10 +175,10 @@
 
 	      function drawVisualization() {
 	        // Some raw data (not necessarily accurate)
-	        /*var data = google.visualization.arrayToDataTable([ ['Age Group', 'Female', 'Male' ],
-                ['0-7',  165,      938 ],
-                ['8-15',  135,      1120 ],
-                ['16-23',  157,      1167 ]
+	        var data = google.visualization.arrayToDataTable([ ['Count', 'Female', 'Male' ],
+                [typeof JsonObject.result[0].educationLevel[0].count === 'undefined' ? 0 : JsonObject.result[0].educationLevel[0].count,  165,      938 ],
+                [typeof JsonObject.result[0].educationLevel[0].count === 'undefined' ? 0 : JsonObject.result[0].educationLevel[0].count,  135,      1120 ],
+                [typeof JsonObject.result[0].educationLevel[0].count === 'undefined' ? 0 : JsonObject.result[0].educationLevel[0].count,  157,      1167 ]
             ]);
 
     	    var options = {
@@ -185,19 +186,19 @@
     	      vAxis: {title: 'Education Level'},
     	      hAxis: {title: 'Age Group'},
     	      seriesType: 'bars',
-    	      series: {5: {type: 'line'}}
+    	      series: {10: {type: 'line'}}
     	    };
 
     	    var chart = new google.visualization.ComboChart(document.getElementById('edu_chart'));
     	    chart.draw(data, options);
-            */
-             // Create our data table out of JSON data loaded from server.
+
+            /* // Create our data table out of JSON data loaded from server.
               var data = new google.visualization.DataTable(datum);
 
               // Instantiate and draw our chart, passing in some options.
               var chart = new google.visualization.PieChart(document.getElementById('edu_chart'));
               chart.draw(data, {width: 400, height: 240});
-
+            */
     	}
         /*
         [

@@ -52,8 +52,8 @@
 		        <!-- Collect the nav links, forms, and other content for toggling -->
 		        <div class="collapse navbar-collapse" id="navbarCollapse">
 		            <ul class="nav navbar-nav">
-		                <li class="active"><a href="index.html">&nbsp;Home&nbsp;</a></li>
-		                <li><a href="education.html" target="_blank">&nbsp;Education&nbsp;</a></li>
+		                <li><a href="index.html">&nbsp;Home&nbsp;</a></li>
+		                <li class="active"><a href="education.html" target="_blank">&nbsp;Education&nbsp;</a></li>
 		                <li><a href="" target="_blank">&nbsp;Income&nbsp;</a></li>
 		            </ul>
 		        </div>
@@ -77,8 +77,7 @@
             <div class="col-lg-1" align="right">
                 <select id="state">
                     <option value="0">Select State</option>
-                    <option value="1">Andra Pradesh</option>
-                    <option value="1">Andra Pradesh</option>
+                    <option value="1">Andra Pradesh</option>   
                     <option value="2">Arunachal Pradesh</option>
                     <option value="3">Assam</option>
                     <option value="4">Bihar</option>
@@ -115,8 +114,8 @@
                     <option value="35">Pondicherry</option>
                 </select>
             </div>
-
-            <div class="col-lg-10" id="edu_chart" style="height:400px;width:100%;">
+            <div class="col-lg-1"></div>    
+            <div class="col-lg-8" id="edu_chart" > <!-- style="height:400px;" -->
                 
             </div>
 
@@ -142,6 +141,7 @@
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         var state = '';
+        var datum = '';
         $(document).on('change', 'select#state', function(){
             state = $(this).val();
             if( state == "0" ){
@@ -150,15 +150,7 @@
             }else{
             	
             	var st = {'stateCode':state};
-            	/*
-                $.post("http://127.0.0.1:5000/getStateEducationData",JSON.stringify({
-		          "stateCode": 1
-		        }),
-		        function(data,status){
-		            alert("Data: " + data);
-		        });
-		        */
-                $.ajax({
+            	$.ajax({
                   type: "POST",
                   url: "http://0.0.0.0:8080/getStateEducationData",
                   data: JSON.stringify({"stateCode":state}),//JSON.stringify(st),
@@ -166,9 +158,12 @@
                     headers:{
                         'Content-Type':"application/json"
                     },
-                  success:  function(response){
-                    drawVisualization(response.content());
-                    //alert(response.content());
+                  success:  function(JsonObject){
+                    //var JsonObject = JSON.parse(response);
+                    datum = '{"cols": [ {"id":"","label":"Gender","pattern":"","type":"string"},{"id":"","label":"Count","pattern":"","type":"number"},{"id":"","label":"Education","pattern":"","type":"string"} ],"rows":[ {';
+                    datum += JsonObject.result[0].Gender +"', "+JsonObject.result[0].educationLevel[0].count+",'"+ JsonObject.result[0].educationLevel[0].class+"'},"+"{'"+ JsonObject.result[1].Gender+"', "+JsonObject.result[1].educationLevel[0].count+",'"+ JsonObject.result[1].educationLevel[0].class+"'}, {'"+ JsonObject.result[2].Gender+"', "+JsonObject.result[2].educationLevel[0].count+",'"+ JsonObject.result[2].educationLevel[0].class+"'}]}";
+                    alert(datum);
+                    drawVisualization();
                   }
                 });
             }
@@ -177,27 +172,41 @@
 	      google.charts.load('current', {'packages':['corechart']});
 	      google.charts.setOnLoadCallback(drawVisualization);
 
-	      function drawVisualization(response) {
-            alert(response);
+	      function drawVisualization() {
 	        // Some raw data (not necessarily accurate)
-	        var data = google.visualization.arrayToDataTable([
-                ['Age Group', 'Female', 'Male' ],
+	        /*var data = google.visualization.arrayToDataTable([ ['Age Group', 'Female', 'Male' ],
                 ['0-7',  165,      938 ],
                 ['8-15',  135,      1120 ],
                 ['16-23',  157,      1167 ]
             ]);
 
-	    var options = {
-	      title : 'Education Census',
-	      vAxis: {title: 'Education Level'},
-	      hAxis: {title: 'Age Group'},
-	      seriesType: 'bars',
-	      series: {5: {type: 'line'}}
-	    };
+    	    var options = {
+    	      title : 'Education Census',
+    	      vAxis: {title: 'Education Level'},
+    	      hAxis: {title: 'Age Group'},
+    	      seriesType: 'bars',
+    	      series: {5: {type: 'line'}}
+    	    };
 
-	    var chart = new google.visualization.ComboChart(document.getElementById('edu_chart'));
-	    chart.draw(data, options);
-	  }
+    	    var chart = new google.visualization.ComboChart(document.getElementById('edu_chart'));
+    	    chart.draw(data, options);
+            */
+             // Create our data table out of JSON data loaded from server.
+              var data = new google.visualization.DataTable(datum);
+
+              // Instantiate and draw our chart, passing in some options.
+              var chart = new google.visualization.PieChart(document.getElementById('edu_chart'));
+              chart.draw(data, {width: 400, height: 240});
+
+    	}
+        /*
+        [
+                ['Age Group', 'Female', 'Male' ],
+                ['0-7',  165,      938 ],
+                ['8-15',  135,      1120 ],
+                ['16-23',  157,      1167 ]
+            ]
+        */
 
     </script>
 </body>

@@ -64,7 +64,10 @@ def populateData():
             conn.commit()
         c.close()
         conn.close()
-        return "Data Population Successful"
+        response = jsonify({'result': "Data Population Successful"})
+        # response = Response(js, status=200, mimetype='application/json')
+        response.headers.add('Content-Type', 'application/json')
+        return response
 
 
 @app.route('/getStateEducationData', methods=["POST"])
@@ -105,6 +108,79 @@ def getEduData():
         conn.close()
         response = jsonify({'result': result})
         # response = Response(js, status=200, mimetype='application/json')
+        response.headers.add('Content-Type' , 'application/json')
+        return response
+
+
+
+#To convert a 2 column tabular data into list of objects with distinct values names
+def ageWiseCountData(x):
+    result = []
+    ageWiseData = {}
+    ageGroupList = []
+    for ch in xrange(0, 26, 5):
+        ageWiseData[str(ch) + "-" + str(ch + 4)] = 0
+        ageGroupList.append(str(ch) + "-" + str(ch + 4))
+    for row in x:
+        ageGroup = str((int(row[0]) / 5) * 5) + "-" + str(int(row[0]) / 5 * 5 + 4)
+        if ageGroup not in ageWiseData.keys():
+            ageWiseData[ageGroup] = int(row[1])
+        else:
+            ageWiseData[ageGroup] += int(row[1])
+    for feed in ageGroupList:
+        tmp = {"ageGroup": feed, "count": ageWiseData[feed]}
+        result.append(tmp)
+    return result
+
+
+@app.route('/getLiteracyData', methods=["POST"])
+def getLiteracyData():
+    data = request.json
+    print data
+    if "stateCode" not in data.keys():
+        return json.dump("State Code is not passed !!")
+    else:
+        c,conn = connection()
+        state = int(data["stateCode"])
+
+        if state <= 0 or state > 35:
+            c.execute("select age,COUNT(*) as count FROM "+eduDB+" where studies IN ('Yes','Done') and age < 30 GROUP BY age ;")
+        else:
+            c.execute(
+                "select age,COUNT(*) as count FROM "+eduDB+" where studies IN ('Yes','Done')  and stateCode = " + str(
+                    state) + " and age < 30 GROUP BY age ;")
+
+        x = c.fetchall()
+        result= ageWiseCountData(x)
+        c.close()
+        conn.close()
+        response = jsonify({'result': result})
+        response.headers.add('Content-Type' , 'application/json')
+        return response
+
+@app.route('/getCurrentStudyingData', methods=["POST"])
+def getStudyingData():
+    data = request.json
+    print data
+    if "stateCode" not in data.keys():
+        return json.dump("State Code is not passed !!")
+    else:
+        c,conn = connection()
+        state = int(data["stateCode"])
+
+        if state <= 0 or state > 35:
+            c.execute("select age,COUNT(*) as count FROM "+eduDB+" where studies IN ('Yes') and age < 30 GROUP BY age ;")
+        else:
+            c.execute(
+                "select age,COUNT(*) as count FROM "+eduDB+" where studies IN ('Yes')  and stateCode = " + str(
+                    state) + " and age < 30 GROUP BY age ;")
+
+        x = c.fetchall()
+
+        result = ageWiseCountData(x)
+        c.close()
+        conn.close()
+        response = jsonify({'result': result})
         response.headers.add('Content-Type' , 'application/json')
         return response
 

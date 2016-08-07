@@ -25,7 +25,7 @@ def num_generator(min, max):
 def connection():
     conn = MySQLdb.connect(host="localhost",
                            user = "root",
-                           passwd = "root123",
+                           passwd = "",
                            db = "jivoxDb")
     c = conn.cursor()
 
@@ -58,9 +58,9 @@ def populateData():
                 currClass = "UNCLASSIFIED"
                 lastClass1 = currClass
             gend = gender[num_generator(0, len(gender) - 1)]
-
-            c.execute("INSERT INTO "+eduDB+" (name, age, gender, stateCode, studies, currentClass, lastClass) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                          (thwart(name), thwart(str(age)), thwart(gend), thwart(str(stateCode)), thwart(studies1), thwart(currClass), thwart(lastClass1)))
+            income = num_generator(0,1000000)
+            c.execute("INSERT INTO "+eduDB+" (name, age, gender, stateCode, studies, currentClass, lastClass, income) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                          (thwart(name), thwart(str(age)), thwart(gend), thwart(str(stateCode)), thwart(studies1), thwart(currClass), thwart(lastClass1), thwart(str(income))))
             conn.commit()
         c.close()
         conn.close()
@@ -152,6 +152,46 @@ def getLiteracyData():
 
         x = c.fetchall()
         result= ageWiseCountData(x)
+        c.close()
+        conn.close()
+        response = jsonify({'result': result})
+        response.headers.add('Content-Type' , 'application/json')
+        return response
+
+@app.route('/getTaxableData', methods=["POST"])
+def getTaxableData():
+    data = request.json
+    print data
+    if "stateCode" not in data.keys():
+        return json.dump("State Code is not passed !!")
+    else:
+        c,conn = connection()
+        state = int(data["stateCode"])
+
+        if state <= 0 or state > 35:
+            c.execute("select age,COUNT(*) as count FROM "+eduDB+" where income > 250000 and age < 70 and age > 16 GROUP BY age ;")
+        else:
+            c.execute(
+                "select age,COUNT(*) as count FROM "+eduDB+" where income > 250000 and age < 70 and age > 16  and stateCode = " + str(
+                    state) + " GROUP BY age ;")
+
+        x = c.fetchall()
+        result = []
+        ageWiseData = {}
+        ageGroupList = []
+        for ch in range(16, 71):
+            ageWiseData[str(ch)] = 0
+            ageGroupList.append(str(ch))
+        for row in x:
+            ageGroup = str(row[0])
+            if ageGroup not in ageWiseData.keys():
+                ageWiseData[ageGroup] = int(row[1])
+            else:
+                ageWiseData[ageGroup] += int(row[1])
+        for feed in ageGroupList:
+            tmp = {"age": int(feed), "count": ageWiseData[feed]}
+            result.append(tmp)
+
         c.close()
         conn.close()
         response = jsonify({'result': result})

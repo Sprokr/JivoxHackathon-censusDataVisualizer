@@ -62,7 +62,6 @@ function drawLiteracy() {
     data.addColumn("string","AgeGroup");
     data.addColumn("number", "Count");
     var allRows = [];
-
     for (var i =0; i < JsonObject1.result.length; i++){
         var nextRow = [];
         nextRow.push(JsonObject1.result[i].ageGroup);
@@ -79,27 +78,45 @@ function drawLiteracy() {
     chart.draw(data, options);
 }
 
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
-function drawChart() {
-var data = google.visualization.arrayToDataTable([
-  ['Age', 'Weight'],
-  [ 8,      12],
-  [ 4,      5.5],
-  [ 11,     14],
-  [ 4,      5],
-  [ 3,      3.5],
-  [ 6.5,    7]
-]);
 
-var options = {
-  title: 'Age vs. Weight comparison',
-  hAxis: {title: 'Age', minValue: 0, maxValue: 15},
-  vAxis: {title: 'Weight', minValue: 0, maxValue: 15},
-  legend: 'none'
-};
 
-var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+//Taxable Data
+var JsonObjectSc = '';
+$(document).ready(function(){
+    $.ajax({
+        type: "POST",
+        url: "http://0.0.0.0:8080/getTaxableData",
+        data: JSON.stringify({"stateCode": 0}),//JSON.stringify(st),
+        cache: false,
+        headers: {
+            'Content-Type': "application/json"
+        },
+        success: function (response) {
+            JsonObjectSc = response;
+            drawTaxable();
+        }
+    });
+});
 
-chart.draw(data, options);
+google.charts.load('current', {'packages': ['corechart']});
+google.charts.setOnLoadCallback(drawTaxable);
+function drawTaxable() {
+    var data = new google.visualization.DataTable();
+    data.addColumn("number","Age");
+    data.addColumn("number", "Count");
+    var allRows = [];
+
+    for (var i =0; i < JsonObjectSc.result.length; i++){
+        var nextRow = [];
+        nextRow.push(JsonObjectSc.result[i].age);
+        nextRow.push(JsonObjectSc.result[i].count);
+        allRows.push(nextRow);
+    }
+    data.addRows(allRows);
+    var options = {
+      title: 'Taxable Data'
+    };
+    var chart = new google.visualization.ScatterChart(document.getElementById('nut_chart'));
+    chart.draw(data, options);
 }
+

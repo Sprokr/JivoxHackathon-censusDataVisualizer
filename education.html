@@ -3,212 +3,214 @@
 
 <html>
 <head>
-	
-	<title>Education Census</title>
 
-	<!-- jQuery -->
-	<script src="js/jquery-3.1.0.min.js"></script>
+    <title>Education Census</title>
 
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- jQuery -->
+    <script src="js/jquery-3.1.0.min.js"></script>
 
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-	<style>
-		select {
-			display: inline-block;
-		    width: 150px;
-		    height: 20px;
-		    padding: 3px 6px;
-		    margin-bottom: 10px;
-		    font-size: 12px;
-		    line-height: 20px;
-		    color: #555555;
-		    vertical-align: middle;
-		    -webkit-border-radius: 4px;
-		    -moz-border-radius: 4px;
-		    border-radius: 4px;
-		}
-	</style>
-</head>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
 
-<body>
+    <style>
+        select {
+            display: inline-block;
+            width: 150px;
+            height: 20px;
+            padding: 3px 6px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            line-height: 20px;
+            color: #555555;
+            vertical-align: middle;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
+    </style>
 
-	<!-- Navigation bar / menu starts-->
-	<nav class="navbar navbar-default navbar-static-top navbar-inverse">
-		<div class="container">
-		    <!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="container-fluid">
-		        <div class="navbar-header">
-		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
-		                <span class="sr-only">Toggle navigation</span>
-		                <span class="icon-bar"></span>
-		                <span class="icon-bar"></span>
-		                <span class="icon-bar"></span>
-		            </button>
-		            <a class="navbar-brand" href="index.html">Census Visualization</a>
-		        </div>
-		        <!-- Collect the nav links, forms, and other content for toggling -->
-		        <div class="collapse navbar-collapse" id="navbarCollapse">
-		            <ul class="nav navbar-nav">
-		                <li><a href="index.html">&nbsp;Home&nbsp;</a></li>
-		                <li class="active"><a href="education.html" target="_blank">&nbsp;Education&nbsp;</a></li>
-		                <li><a href="" target="_blank">&nbsp;Income&nbsp;</a></li>
-		            </ul>
-		        </div>
-		        <div></div>
-		    </div>
-		</div> 
-    </nav>
-    <!-- Navigation bar / menu ends-->
 
-    <!-- Main Content starts here -->
-    <div class="jumbotron">
-        <div class="container-fluid">
-            <h1 class="page-header" align="center">Education Census 2016 Data Visualization</h1>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-    	<!-- .row -->
-        <div class="row">
-    	   <!-- Gap for space -->
-            <div class="col-lg-1" align="right">
-                <select id="state">
-                    <option value="0">Select State</option>
-                    <option value="1">Andra Pradesh</option>   
-                    <option value="2">Arunachal Pradesh</option>
-                    <option value="3">Assam</option>
-                    <option value="4">Bihar</option>
-                    <option value="5">Chhattisgarh</option>
-                    <option value="6">Goa</option>
-                    <option value="7">Gujarat</option>
-                    <option value="8">Haryana</option>
-                    <option value="9">Himachal Prades</option>
-                    <option value="10">Jammu and Kashmir</option>
-                    <option value="11">Jharkhand</option>
-                    <option value="12">Karnataka</option>
-                    <option value="13">Kerala</option>
-                    <option value="14">Madya Pradesh</option>
-                    <option value="15">Maharashtra</option>
-                    <option value="16">Manipur</option>
-                    <option value="17">Meghalaya</option>
-                    <option value="18">Mizoram</option>
-                    <option value="19">Nagaland</option>
-                    <option value="20">Orissa</option>
-                    <option value="21">Punjab</option>
-                    <option value="22">Rajasthan</option>
-                    <option value="23">Sikkim</option>
-                    <option value="24">Tamil Nadu</option>
-                    <option value="25">Tripura</option>
-                    <option value="26">Uttaranchal</option>
-                    <option value="27">Uttar Pradesh</option>
-                    <option value="28">West Bengal</option>
-                    <option value="29">Andaman and Nicobar Islands</option>
-                    <option value="30">Chandigarh</option>
-                    <option value="31">Dadar and Nagar Haveli</option>
-                    <option value="32">Daman and Diu</option>
-                    <option value="33">Delhi</option>
-                    <option value="34">Lakshadeep</option>
-                    <option value="35">Pondicherry</option>
-                </select>
-            </div>
-            <div class="col-lg-1"></div>    
-            <div class="col-lg-8" id="edu_chart" style="height:400px;"> <!-- style="height:400px;" -->
-                
-            </div>
-
-    	</div>
-        <!-- #row -->
-    </div>
-
-    <br>
-    <br>
-    <!-- Main Content ends here -->
-
-    <!-- Footer Starts-->
-    <hr>
-    <div class="row" align="center">
-        <div class="col-xs-12">
-            <footer>
-                <p>&copy; Copyright 2016 Jivox Hackathon</p>
-            </footer>
-        </div>
-    </div>
-    <!-- Footer Ends-->
-
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script>
         var state = '';
         var JsonObject = '';
-        $(document).on('change', 'select#state', function(){
+        $(document).on('change', 'select#state', function () {
             state = $(this).val();
-            if( state == "0" ){
+            if (state == "0") {
                 alert("Please select a state!!!!");
                 $("#edu_chart").html("");
-            }else{
-            	
-            	var st = {'stateCode':state};
-            	$.ajax({
-                  type: "POST",
-                  url: "http://0.0.0.0:8080/getStateEducationData",
-                  data: JSON.stringify({"stateCode":state}),//JSON.stringify(st),
-                  cache: false,
-                    headers:{
-                        'Content-Type':"application/json"
+            } else {
+
+                var st = {'stateCode': state};
+                $.ajax({
+                    type: "POST",
+                    url: "http://0.0.0.0:8080/getStateEducationData",
+                    data: JSON.stringify({"stateCode": state}),//JSON.stringify(st),
+                    cache: false,
+                    headers: {
+                        'Content-Type': "application/json"
                     },
-                  success:  function(response){
-                    JsonObject = response;
-                    //var JsonObject = JSON.parse(response);
-                    //datum = '{"cols": [ {"id":"","label":"Gender","pattern":"","type":"string"},{"id":"","label":"Count","pattern":"","type":"number"},{"id":"","label":"Education","pattern":"","type":"string"} ],"rows":[ {';
-                    //datum += "'" + JsonObject.result[0].Gender +"', "+JsonObject.result[0].educationLevel[0].count+",'"+ JsonObject.result[0].educationLevel[0].class+"'},"+"{'"+ JsonObject.result[1].Gender+"', "+JsonObject.result[1].educationLevel[0].count+",'"+ JsonObject.result[1].educationLevel[0].class+"'}, {'"+ JsonObject.result[2].Gender+"', "+JsonObject.result[2].educationLevel[0].count+",'"+ JsonObject.result[2].educationLevel[0].class+"'}]}";
-                    //alert(datum);
-                    drawVisualization();
-                  }
+                    success: function (response) {
+                        JsonObject = response;
+                        drawVisualization();
+                    }
                 });
             }
         });
 
-	      google.charts.load('current', {'packages':['corechart']});
-	      google.charts.setOnLoadCallback(drawVisualization);
 
-	      function drawVisualization() {
-	        // Some raw data (not necessarily accurate)
-	        var data = google.visualization.arrayToDataTable([ ['Count', 'Female', 'Male' ],
-                [typeof JsonObject.result[0].educationLevel[0].count === 'undefined' ? 0 : JsonObject.result[0].educationLevel[0].count,  165,      938 ],
-                [typeof JsonObject.result[0].educationLevel[0].count === 'undefined' ? 0 : JsonObject.result[0].educationLevel[0].count,  135,      1120 ],
-                [typeof JsonObject.result[0].educationLevel[0].count === 'undefined' ? 0 : JsonObject.result[0].educationLevel[0].count,  157,      1167 ]
-            ]);
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawVisualization);
+        function drawVisualization() {
+            var allRows = [];
+            // Some raw data (not necessarily accurate)
+            var data = new google.visualization.DataTable();
+            var firstColumn = [];
 
-    	    var options = {
-    	      title : 'Education Census',
-    	      vAxis: {title: 'Education Level'},
-    	      hAxis: {title: 'Age Group'},
-    	      seriesType: 'bars',
-    	      series: {10: {type: 'line'}}
-    	    };
+            for (var i = 0; i < JsonObject.result[0].educationLevel.length; i++) {
+                firstColumn.push(JsonObject.result[0].educationLevel[i].class);
+            }
+            var column = ["Class"];
+            data.addColumn("string", "Class");
+            for (var i = 0; i < JsonObject.result.length; i++) {
+                column.push(JsonObject.result[i].Gender);
+                data.addColumn("number", JsonObject.result[i].Gender)
+            }
+            for (var a = 0; a < firstColumn.length; a++) {
+                var nextRow = [firstColumn[a]];
+                for (var b = 0; b < column.length - 1; b++) {
+                    nextRow.push(JsonObject.result[b].educationLevel[a].count);
+                }
+                allRows.push(nextRow);
+            }
+            data.addRows(allRows);
+            var options = {
+                title: 'Education Census',
+                vAxis: {title: 'Number Of People'},
+                hAxis: {title: 'Education Level'},
+                seriesType: 'bars',
+                series: {3: {type: 'line'}}
+            };
 
-    	    var chart = new google.visualization.ComboChart(document.getElementById('edu_chart'));
-    	    chart.draw(data, options);
+            var chart = new google.visualization.ComboChart(document.getElementById('edu_chart'));
+            chart.draw(data, options);
 
-            /* // Create our data table out of JSON data loaded from server.
-              var data = new google.visualization.DataTable(datum);
 
-              // Instantiate and draw our chart, passing in some options.
-              var chart = new google.visualization.PieChart(document.getElementById('edu_chart'));
-              chart.draw(data, {width: 400, height: 240});
-            */
-    	}
-        /*
-        [
-                ['Age Group', 'Female', 'Male' ],
-                ['0-7',  165,      938 ],
-                ['8-15',  135,      1120 ],
-                ['16-23',  157,      1167 ]
-            ]
-        */
-
+        }
     </script>
+</head>
+
+<body>
+
+<!-- Navigation bar / menu starts-->
+<nav class="navbar navbar-default navbar-static-top navbar-inverse">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Census Visualization</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">&nbsp;Home&nbsp;</a></li>
+                    <li class="active"><a href="education.html" target="_blank">&nbsp;Education&nbsp;</a></li>
+                </ul>
+            </div>
+            <div></div>
+        </div>
+    </div>
+</nav>
+<!-- Navigation bar / menu ends-->
+
+<!-- Main Content starts here -->
+<div class="jumbotron">
+    <div class="container-fluid">
+        <h1 class="page-header" align="center">Education Census 2016 Data Visualization</h1>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- .row -->
+    <div class="row">
+        <!-- Gap for space -->
+        <div class="col-lg-1" align="right">
+            <select id="state">
+                <option value="0">Select State</option>
+                <option value="1">Andra Pradesh</option>
+                <option value="2">Arunachal Pradesh</option>
+                <option value="3">Assam</option>
+                <option value="4">Bihar</option>
+                <option value="5">Chhattisgarh</option>
+                <option value="6">Goa</option>
+                <option value="7">Gujarat</option>
+                <option value="8">Haryana</option>
+                <option value="9">Himachal Prades</option>
+                <option value="10">Jammu and Kashmir</option>
+                <option value="11">Jharkhand</option>
+                <option value="12">Karnataka</option>
+                <option value="13">Kerala</option>
+                <option value="14">Madya Pradesh</option>
+                <option value="15">Maharashtra</option>
+                <option value="16">Manipur</option>
+                <option value="17">Meghalaya</option>
+                <option value="18">Mizoram</option>
+                <option value="19">Nagaland</option>
+                <option value="20">Orissa</option>
+                <option value="21">Punjab</option>
+                <option value="22">Rajasthan</option>
+                <option value="23">Sikkim</option>
+                <option value="24">Tamil Nadu</option>
+                <option value="25">Tripura</option>
+                <option value="26">Uttaranchal</option>
+                <option value="27">Uttar Pradesh</option>
+                <option value="28">West Bengal</option>
+                <option value="29">Andaman and Nicobar Islands</option>
+                <option value="30">Chandigarh</option>
+                <option value="31">Dadar and Nagar Haveli</option>
+                <option value="32">Daman and Diu</option>
+                <option value="33">Delhi</option>
+                <option value="34">Lakshadeep</option>
+                <option value="35">Pondicherry</option>
+            </select>
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-8" id="edu_chart" style="width: 900px;height:500px;"> <!-- style="height:400px;" -->
+
+        </div>
+
+    </div>
+    <!-- #row -->
+</div>
+
+<br>
+<br>
+<!-- Main Content ends here -->
+
+<!-- Footer Starts-->
+<hr>
+<div class="row" align="center">
+    <div class="col-xs-12">
+        <footer>
+            <p>&copy; Copyright 2016 Jivox Hackathon</p>
+        </footer>
+    </div>
+</div>
+<!-- Footer Ends-->
+
+
 </body>
 </html>
